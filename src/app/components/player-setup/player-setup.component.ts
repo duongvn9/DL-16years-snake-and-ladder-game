@@ -9,7 +9,6 @@ import {generateSnakesAndLadders} from '../../utils/board-layout.util';
 import {InvalidPlayerNameError, DuplicatePlayerNameError} from '../../models/player.model';
 import {InvalidPlayerCountError} from '../../models/game-state.model';
 import {Team, AVAILABLE_COLORS, createTeams, InvalidTeamCountError} from '../../models/team.model';
-import {DEMO_PLAYERS, DEMO_TEAM_COUNT, DEMO_PLAYER_COUNT} from '../../constants/demo-data.constant';
 import {MapType, FIXED_MAP_CONFIG, DEFAULT_MAP_TYPE} from '../../constants/fixed-map.constant';
 
 interface PlayerNameInput {
@@ -432,41 +431,6 @@ export class PlayerSetupComponent implements OnInit {
      */
     onWinningPositionInput(): void {
         this.winningPositionError = null;
-    }
-
-    // ============ Demo Data Methods (Requirements 14.1, 14.2, 14.3) ============
-
-    /**
-     * Insert demo data for testing
-     * - Creates 7 teams if not already present
-     * - Fills in 34 player names with pre-assigned teams
-     */
-    insertDemoData(): void {
-        // Set player count and team count from demo data
-        this.playerCount = DEMO_PLAYER_COUNT;
-        this.teamCount = DEMO_TEAM_COUNT;
-
-        // Generate teams
-        this.generateTeams();
-
-        // Create player name inputs with demo data (order = null, user will set it)
-        this.playerNames = DEMO_PLAYERS.map(demoPlayer => ({
-            name: demoPlayer.name,
-            teamId: this.teams[demoPlayer.teamIndex]?.id || this.teams[0].id,
-            error: null,
-            order: null
-        }));
-
-        // Show the player name form
-        this.showPlayerNameForm = true;
-
-        // Clear any errors
-        this.generalError = null;
-        this.playerCountError = null;
-        this.teamCountError = null;
-
-        // Show notification
-        this.notificationService.success(`Đã thêm ${DEMO_PLAYER_COUNT} người chơi vào ${DEMO_TEAM_COUNT} teams.`);
     }
 
     // ============ Player Management Methods ============
