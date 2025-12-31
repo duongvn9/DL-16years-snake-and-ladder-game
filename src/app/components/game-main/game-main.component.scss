@@ -29,15 +29,21 @@ $shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
 $shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
 $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
 
-// Main container - Fixed layout, no page scroll
+// Main container
 .game-main-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    max-height: 100vh;
+    min-height: 100vh;
     background-color: $background-color;
     position: relative;
-    overflow: hidden;
+}
+
+// Desktop only: fixed viewport, no scroll
+@media (min-width: 768px) {
+    .game-main-container {
+        height: 100vh;
+        overflow: hidden;
+    }
 }
 
 // Error Boundary Wrapper
@@ -324,8 +330,14 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
     padding: $spacing-md;
     flex: 1;
     min-height: 0;
-    overflow: hidden;
-    height: calc(100vh - 92px); // Subtract header height (60px logo + 32px padding)
+}
+
+// Desktop: fixed height with overflow hidden
+@media (min-width: 768px) {
+    .game-layout {
+        height: calc(100vh - 92px);
+        overflow: hidden;
+    }
 }
 
 // Column base styles
@@ -335,8 +347,14 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
     background: $card-background;
     border-radius: $border-radius-lg;
     box-shadow: $shadow-sm;
-    overflow: hidden;
-    max-height: 100%;
+}
+
+// Desktop: columns have overflow hidden
+@media (min-width: 768px) {
+    .column {
+        overflow: hidden;
+        max-height: 100%;
+    }
 }
 
 // Column 1: Dice Roller List (3 parts)
@@ -348,6 +366,12 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
     .dice-roller-section {
         flex: 1;
         min-height: 0;
+    }
+}
+
+// Desktop: dice roller section overflow
+@media (min-width: 768px) {
+    .column-dice .dice-roller-section {
         overflow: hidden;
     }
 }
@@ -355,19 +379,16 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
 // Column 2: Leaderboard with Target Selection (4 parts)
 .column-leaderboard {
     padding: 0;
-    overflow: hidden;
 
     ::ng-deep app-leaderboard {
         display: flex;
         flex-direction: column;
         height: 100%;
-        overflow: hidden;
 
         .leaderboard {
             display: flex;
             flex-direction: column;
             height: 100%;
-            overflow: hidden;
         }
 
         .leaderboard-container {
@@ -393,6 +414,18 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
                     background: #a1a1a1;
                 }
             }
+        }
+    }
+}
+
+// Desktop: leaderboard overflow
+@media (min-width: 768px) {
+    .column-leaderboard {
+        overflow: hidden;
+
+        ::ng-deep app-leaderboard,
+        ::ng-deep .leaderboard {
+            overflow: hidden;
         }
     }
 }
@@ -1168,7 +1201,7 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 // Tablet (768px - 1024px): 2-column layout
-@media (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
     .game-main-container {
         height: 100vh;
         overflow: hidden;
@@ -1219,12 +1252,6 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
 
 // Mobile (<768px): Stack columns vertically - allow page scroll on mobile
 @media (max-width: 767px) {
-    .game-main-container {
-        height: auto;
-        min-height: 100vh;
-        overflow-y: auto;
-    }
-
     .game-header {
         padding: 10px 12px;
         position: sticky;
@@ -1252,48 +1279,72 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
     }
 
+    .setup-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: $background-color;
+        padding: 10px 12px;
+
+        .header-btn {
+            padding: 6px 8px;
+            font-size: 0.85rem;
+
+            .btn-text {
+                display: none;
+            }
+        }
+
+        .round-badge {
+            padding: 4px 10px;
+
+            .round-label {
+                font-size: 0.7rem;
+            }
+
+            .round-number {
+                font-size: 1rem;
+            }
+        }
+    }
+
     .game-layout {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
+        display: flex;
+        flex-direction: column;
         gap: 10px;
         padding: 10px;
-        overflow-y: visible;
+        overflow: visible;
         height: auto;
-        flex: 1;
+        flex: none;
 
         .column {
             min-height: auto;
             max-height: none;
+            width: 100%;
+            overflow: visible;
         }
 
-        // Reorder columns for mobile
-        .column-dice {
-            order: 1;
-
-            .dice-roller-section {
-                max-height: 180px;
-                overflow-y: auto;
-            }
-        }
-
-        .column-leaderboard {
-            order: 2;
-            max-height: 260px;
-        }
-
+        // Reorder columns for mobile: Board -> Dice Roller -> Leaderboard
         .column-board {
-            order: 3;
-            min-height: 280px;
-            max-height: none;
+            order: 1;
+            min-height: 380px;
 
             .dice-action-section {
                 flex-direction: column;
                 gap: $spacing-sm;
             }
         }
+
+        .column-dice {
+            order: 2;
+        }
+
+        .column-leaderboard {
+            order: 3;
+        }
     }
 
-    .column-dice {
+    .column-board {
         .dice-action-section {
             padding: 12px;
 
@@ -1310,6 +1361,7 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
             .roll-dice-btn {
                 padding: 12px 16px;
                 font-size: 1rem;
+                width: 100%;
             }
 
             .hint-text {
@@ -1401,27 +1453,27 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
         gap: 8px;
         padding: 8px;
 
+        // Keep same order: Board -> Dice Roller -> Leaderboard
+        .column-board {
+            order: 1;
+            min-height: 320px;
+        }
+
         .column-dice {
+            order: 2;
+
             .dice-roller-section {
-                max-height: 150px;
+                max-height: 180px;
             }
         }
 
-        .column-target {
-            max-height: 180px;
-        }
-
-        .column-board {
-            min-height: 250px;
-            max-height: 320px;
-        }
-
         .column-leaderboard {
-            max-height: 220px;
+            order: 3;
+            max-height: 260px;
         }
     }
 
-    .column-dice {
+    .column-board {
         .dice-action-section {
             padding: 10px;
 
@@ -1446,35 +1498,23 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
 // Landscape mobile orientation
 @media (max-width: 767px) and (orientation: landscape) {
     .game-layout {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto;
-
-        .column-dice {
-            grid-column: 1;
-            grid-row: 1;
-            order: 1;
-        }
-
-        .column-target {
-            grid-column: 2;
-            grid-row: 1;
-            order: 2;
-            max-height: 200px;
-        }
+        // Keep single column layout even in landscape
+        display: flex;
+        flex-direction: column;
 
         .column-board {
-            grid-column: 1;
-            grid-row: 2;
-            order: 3;
-            min-height: 200px;
-            max-height: 280px;
+            order: 1;
+            min-height: 250px;
+        }
+
+        .column-dice {
+            order: 2;
+            max-height: 150px;
         }
 
         .column-leaderboard {
-            grid-column: 2;
-            grid-row: 2;
-            order: 4;
-            max-height: 280px;
+            order: 3;
+            max-height: 200px;
         }
     }
 }

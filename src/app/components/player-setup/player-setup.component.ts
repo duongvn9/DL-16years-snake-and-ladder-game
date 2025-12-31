@@ -74,6 +74,9 @@ export class PlayerSetupComponent implements OnInit {
     previewSnakesAndLadders: SnakeOrLadder[] = [];
     previewBoardRows: BoardCell[][] = [];
 
+    // Help modal
+    showHelpModal: boolean = false;
+
     constructor(
         private gameService: GameService,
         private storageService: StorageService,
@@ -619,5 +622,21 @@ export class PlayerSetupComponent implements OnInit {
      */
     getPreviewSnakeCount(): number {
         return this.previewSnakesAndLadders.filter(e => e.type === 'snake').length;
+    }
+
+    // ============ Help Modal Methods ============
+
+    /**
+     * Open help modal
+     */
+    openHelpModal(): void {
+        this.showHelpModal = true;
+    }
+
+    /**
+     * Close help modal
+     */
+    closeHelpModal(): void {
+        this.showHelpModal = false;
     }
 }

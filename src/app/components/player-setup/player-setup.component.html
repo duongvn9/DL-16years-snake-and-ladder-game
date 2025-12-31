@@ -1,4 +1,9 @@
 <div class="player-setup-container" role="main">
+  <!-- Help Button - Always visible -->
+  <button type="button" class="btn-help-floating" (click)="openHelpModal()" title="Hướng dẫn chơi">
+    ❓ Hướng dẫn
+  </button>
+
   <!-- Step 1: Initial Configuration -->
   <div class="initial-config" *ngIf="!showPlayerNameForm">
     <div class="config-card">
@@ -161,7 +166,7 @@
             </label>
           </div>
           <button type="button" class="btn btn-preview" (click)="openMapPreview()">
-            👁️ Xem trước Map
+            Xem trước Map
           </button>
         </div>
 
@@ -301,6 +306,62 @@
         <button type="button" class="btn btn-secondary" (click)="regenerateRandomMap()">
           🔄 Tạo map mới
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div class="help-modal" *ngIf="showHelpModal" (click)="closeHelpModal()">
+  <div class="help-modal-content" (click)="$event.stopPropagation()">
+    <div class="help-modal-header">
+      <h3>📖 Hướng dẫn chơi</h3>
+      <button type="button" class="close-btn" (click)="closeHelpModal()">✕</button>
+    </div>
+    <div class="help-modal-body">
+      <!-- Step 1 -->
+      <div class="help-section">
+        <h4>🎯 Bước 1: Thiết lập game</h4>
+        <ol>
+          <li>Nhập số lượng người chơi (tối thiểu 2)</li>
+          <li>Nhập tên và chọn đội cho từng người chơi</li>
+          <li>Chọn chế độ map (Random hoặc Fixed)</li>
+          <li>Nhấn "Bắt đầu chơi"</li>
+        </ol>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="help-section">
+        <h4>🎮 Bước 2: Chơi game</h4>
+        <ol>
+          <li><strong>Người tung xúc xắc</strong> được hiển thị ở panel bên trái</li>
+          <li><strong>Chọn người di chuyển</strong> từ bảng xếp hạng (có thể chọn bất kỳ ai trong đội)</li>
+          <li><strong>Nhấn nút tung xúc xắc</strong> để tung</li>
+          <li>Quân cờ sẽ tự động di chuyển theo số điểm</li>
+          <li>Nếu đứng vào thang, chọn leo lên hoặc ở lại (5 giây)</li>
+          <li>Nếu đứng vào đầu rắn, tự động trượt xuống</li>
+        </ol>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="help-section">
+        <h4>🏆 Bước 3: Chiến thắng</h4>
+        <ul>
+          <li>Người chơi đầu tiên đến ô 100 sẽ về nhất</li>
+          <li>Phải tung đúng số điểm để về đích (không được vượt quá)</li>
+        </ul>
+      </div>
+
+      <!-- Features -->
+      <div class="help-section">
+        <h4>✨ Tính năng</h4>
+        <ul>
+          <li><strong>🐍 6 rắn</strong> - khiến người chơi bị trượt xuống</li>
+          <li><strong>🪜 12 thang</strong> - giúp người chơi leo lên nhanh hơn</li>
+          <li><strong>⏱️ Đếm ngược 15 giây</strong> cho mỗi lượt tung xúc xắc</li>
+          <li><strong>🎲 Xúc xắc tùy chỉnh</strong> - có thể cấu hình số điểm tối đa</li>
+          <li><strong>💾 Tự động lưu game</strong> - khôi phục khi tải lại trang</li>
+        </ul>
       </div>
     </div>
   </div>
