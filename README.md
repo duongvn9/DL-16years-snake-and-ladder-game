@@ -1,6 +1,6 @@
 # 🎲 DL 16 Years Anniversary Game - Cờ Rắn Thang
 
-Game Cờ Rắn Thang (Snakes and Ladders) được phát triển đặc biệt cho sự kiện kỷ niệm 16 năm thành lập DL.
+🎮 **Chơi thử ngay:** [https://lib-dev1.dlcorp.com.vn/game/](https://lib-dev1.dlcorp.com.vn/game/)
 
 ![Angular](https://img.shields.io/badge/Angular-19.2-red?logo=angular)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)
@@ -27,7 +27,7 @@ Game Cờ Rắn Thang (Snakes and Ladders) được phát triển đặc biệt 
 
 ### 🏆 Hệ thống xếp hạng
 - **Bảng xếp hạng real-time** hiển thị thứ hạng người chơi
-- **Vị trí chiến thắng đặc biệt** - Hạng 16 (kỷ niệm 16 năm)
+- **Vị trí chiến thắng đặc biệt** - Được lựa chọn ở màn hình setup
 - **Hiệu ứng ăn mừng** khi người chơi về đích
 
 ### ⏱️ Tính năng thời gian
@@ -95,7 +95,6 @@ Build artifacts sẽ được lưu trong thư mục `dist/`
 ### Bước 3: Chiến thắng
 - Người chơi đầu tiên đến ô 100 sẽ về nhất
 - Phải tung đúng số điểm để về đích (không được vượt quá)
-- Hạng 16 là vị trí chiến thắng đặc biệt! 🎉
 
 ## 🛠️ Cấu trúc dự án
 
