@@ -527,10 +527,6 @@ export class GameMainComponent implements OnInit, OnDestroy {
     return 'restart.svg';
   }
 
-  get dlLogoPath(): string {
-    return 'DL-logo.svg';
-  }
-
   openConfigModal(): void {
     this.showConfigModal = true;
     this.configValidationError = '';

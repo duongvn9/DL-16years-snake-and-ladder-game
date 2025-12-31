@@ -377,7 +377,6 @@ export class PlayerSetupComponent implements OnInit {
     /**
      * Check if a winning position is valid
      * - Must be between 1 and total players
-     * - Must not be 16 if playerCount >= 16 (already default)
      * - Must not be duplicate
      */
     isValidWinningPosition(): boolean {
@@ -385,8 +384,6 @@ export class PlayerSetupComponent implements OnInit {
         if (pos === null || pos === undefined) return false;
         if (!Number.isInteger(pos)) return false;
         if (pos < 1 || pos > this.playerCount) return false;
-        // Only block 16 if it's already a default (playerCount >= 16)
-        if (pos === 16 && this.playerCount >= 16) return false;
         if (this.additionalWinningPositions.includes(pos)) return false;
         return true;
     }
@@ -412,12 +409,6 @@ export class PlayerSetupComponent implements OnInit {
             return;
         }
 
-        // Only block 16 if it's already a default (playerCount >= 16)
-        if (this.newWinningPosition === 16 && this.playerCount >= 16) {
-            this.winningPositionError = 'Vị trí 16 đã là vị trí chiến thắng mặc định.';
-            return;
-        }
-
         if (this.additionalWinningPositions.includes(this.newWinningPosition)) {
             this.winningPositionError = 'Vị trí này đã được thêm.';
             return;
@@ -437,21 +428,10 @@ export class PlayerSetupComponent implements OnInit {
     }
 
     /**
-     * Get all winning positions (including default 16 if applicable)
+     * Get all winning positions
      */
     get allWinningPositions(): number[] {
-        // Only include position 16 if there are at least 16 players
-        const positions = this.playerCount >= 16 
-            ? [16, ...this.additionalWinningPositions]
-            : [...this.additionalWinningPositions];
-        return positions.sort((a, b) => a - b);
-    }
-
-    /**
-     * Check if position 16 should be shown as default
-     */
-    get showDefault16(): boolean {
-        return this.playerCount >= 16;
+        return [...this.additionalWinningPositions].sort((a, b) => a - b);
     }
 
     /**

@@ -1,9 +1,4 @@
 <div class="player-setup-container" role="main">
-  <!-- Header -->
-  <div class="setup-header">
-    <img src="DL-logo.svg" alt="DL Logo" class="dl-logo" />
-  </div>
-
   <!-- Step 1: Initial Configuration -->
   <div class="initial-config" *ngIf="!showPlayerNameForm">
     <div class="config-card">
@@ -175,16 +170,14 @@
         <!-- Winning Positions Section -->
         <div class="settings-section winning-positions-section">
           <h3>🏆 Vị trí chiến thắng</h3>
-          <p class="card-instruction" *ngIf="showDefault16">Vị trí 16 mặc định (Kỷ niệm 16 năm)</p>
-          <p class="card-instruction" *ngIf="!showDefault16">Nhập vị trí từ 1-{{ playerCount }}</p>
+          <p class="card-instruction">Nhập vị trí từ 1-{{ playerCount }}</p>
 
           <div class="positions-display">
-            <span class="position-badge default" *ngIf="showDefault16">🏆 #16</span>
             <span class="position-badge additional" *ngFor="let pos of additionalWinningPositions">
               ⭐ #{{ pos }}
               <button type="button" class="remove-btn" (click)="removeWinningPosition(pos)">✕</button>
             </span>
-            <span class="no-positions" *ngIf="!showDefault16 && additionalWinningPositions.length === 0">
+            <span class="no-positions" *ngIf="additionalWinningPositions.length === 0">
               Chưa có vị trí nào
             </span>
           </div>
