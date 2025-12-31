@@ -72,7 +72,7 @@ export class GameMainComponent implements OnInit, OnDestroy {
   diceRollTimeExpired: boolean = false; // Flag to show "Hết giờ" message
   private ladderTimerInterval?: ReturnType<typeof setInterval>;
   private diceRollTimerInterval?: ReturnType<typeof setInterval>;
-  private readonly LADDER_CHOICE_TIMEOUT = 5; // 5 seconds for ladder choice
+  private readonly LADDER_CHOICE_TIMEOUT = 8; // 8 seconds for ladder choice
   private readonly DICE_ROLL_TIMEOUT = 15; // 15 seconds for dice roll
 
   // Finish Modal state
