@@ -25,6 +25,10 @@ export class BoardComponent implements OnInit, OnDestroy {
   staticTokenPlayer: { id: string; name: string; color: string; position: number } | null = null;
   staticTokenPosition: { x: number; y: number } = { x: 0, y: 0 };
   
+  // Next roller token display (shown for the player who will roll next)
+  nextRollerTokenPlayer: { id: string; name: string; color: string; position: number } | null = null;
+  nextRollerTokenPosition: { x: number; y: number } = { x: 0, y: 0 };
+  
   private stateSubscription?: Subscription;
 
   constructor(private gameService: GameService) {}
@@ -58,6 +62,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   /**
    * Update static token display based on game state
    * Shows token for the player specified in showTokenForPlayerId
+   * Also shows token for the next dice roller
    */
   private updateStaticTokenDisplay(state: GameState): void {
     // Don't show static token while animating
@@ -65,6 +70,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Update target player token
     if (state.showTokenForPlayerId) {
       const player = state.players.find(p => p.id === state.showTokenForPlayerId);
       if (player) {
@@ -81,6 +87,62 @@ export class BoardComponent implements OnInit, OnDestroy {
     } else {
       this.staticTokenPlayer = null;
     }
+
+    // Update next roller token
+    this.updateNextRollerTokenDisplay(state);
+  }
+
+  /**
+   * Update next roller token display based on game state
+   * Shows token for the current dice roller (next person to roll)
+   */
+  private updateNextRollerTokenDisplay(state: GameState): void {
+    if (state.currentDiceRollerId) {
+      const nextRoller = state.players.find(p => p.id === state.currentDiceRollerId);
+      
+      // Only show if next roller is different from the target player (avoid duplicate tokens)
+      if (nextRoller && nextRoller.id !== state.showTokenForPlayerId) {
+        this.nextRollerTokenPlayer = {
+          id: nextRoller.id,
+          name: nextRoller.name,
+          color: nextRoller.color,
+          position: nextRoller.position
+        };
+        this.updateNextRollerTokenPosition(nextRoller.position);
+      } else {
+        this.nextRollerTokenPlayer = null;
+      }
+    } else {
+      this.nextRollerTokenPlayer = null;
+    }
+  }
+
+  /**
+   * Update next roller token position based on board position
+   */
+  private updateNextRollerTokenPosition(position: number): void {
+    // Handle position 0 (starting position - off the board)
+    if (position === 0) {
+      this.nextRollerTokenPosition = {
+        x: 5,
+        y: 95
+      };
+      return;
+    }
+
+    const cellPos = this.getCellPosition(position);
+    if (!cellPos) {
+      console.error(`Cannot find cell position for ${position}`);
+      return;
+    }
+
+    const cellWidth = 10;
+    const cellHeight = 10;
+
+    this.nextRollerTokenPosition = {
+      x: cellPos.x * cellWidth + cellWidth / 2,
+      y: (9 - cellPos.y) * cellHeight + cellHeight / 2
+    };
   }
 
   /**

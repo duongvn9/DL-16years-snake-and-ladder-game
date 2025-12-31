@@ -75,6 +75,17 @@
       </div>
     </div>
 
+    <!-- Next Roller Token Overlay (shown for the player who will roll next) -->
+    <div class="token-overlay" *ngIf="nextRollerTokenPlayer && !isAnimating">
+      <div 
+        class="static-token next-roller-token"
+        [style.left.%]="nextRollerTokenPosition.x"
+        [style.top.%]="nextRollerTokenPosition.y">
+        <img src="red.svg" alt="Token" class="token-image">
+        <div class="player-name-label">{{ nextRollerTokenPlayer.name }}</div>
+      </div>
+    </div>
+
     <!-- Moving Token Overlay (shown during animation) -->
     <div class="token-overlay" *ngIf="movingPlayer">
       <div 

@@ -179,6 +179,16 @@
     }
 }
 
+// Next Roller Token - Slightly different style to distinguish
+.next-roller-token {
+    opacity: 0.75;
+
+    .player-name-label {
+        background: rgba(59, 130, 246, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+}
+
 // Moving Token - Animated player indicator
 .moving-token {
     position: absolute;
