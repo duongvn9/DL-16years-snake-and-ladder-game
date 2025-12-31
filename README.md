@@ -1,6 +1,8 @@
-# 🎲 DL 16 Years Anniversary Game - Cờ Rắn Thang
+# 🎲 Cờ Rắn Thang - Snake and Ladder Teambuilding Game
 
 🎮 **Chơi thử ngay:** [https://lib-dev1.dlcorp.com.vn/game/](https://lib-dev1.dlcorp.com.vn/game/)
+
+> 📌 *English caption below*
 
 ![Angular](https://img.shields.io/badge/Angular-19.2-red?logo=angular)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)
@@ -134,6 +136,128 @@ Game cho phép tùy chỉnh số điểm tối đa của xúc xắc:
 - Mặc định: 1-12
 - Có thể thay đổi trong game qua nút cấu hình
 - Áp dụng ngay hoặc từ round tiếp theo
+
+## 🎨 Tech Stack
+
+- **Framework**: Angular 19.2
+- **Language**: TypeScript 5.7
+- **Styling**: SCSS
+- **State Management**: RxJS BehaviorSubject
+- **Storage**: localStorage
+- **Build Tool**: Angular CLI
+- **Testing**: Jasmine + Karma
+
+---
+
+# 🎲 Snake and Ladder - Teambuilding Game (English)
+
+🎮 **Play now:** [https://lib-dev1.dlcorp.com.vn/game/](https://lib-dev1.dlcorp.com.vn/game/)
+
+A digital version of the classic Snakes and Ladders game, designed for team building activities and company events. The game supports multiple players with team system, real-time leaderboard, and many interactive features.
+
+## ✨ Key Features
+
+### 🎮 Gameplay
+- **10x10 board** with 100 cells, clearly displaying snake and ladder positions
+- **Multi-player support** (minimum 2 players)
+- **Team system** with distinguishing colors
+- **Customizable dice** - configurable maximum points (default 1-12)
+- **Fixed map mode** with predefined snake/ladder positions
+
+### 🐍 Snakes and Ladders
+- **12 ladders** help players climb up faster
+- **6 snakes** cause players to slide down
+- **Ladder climbing choice** - players can choose to climb or stay (5 seconds to decide)
+- **Automatic snake sliding** when landing on a snake's head
+
+### 🏆 Ranking System
+- **Real-time leaderboard** displaying player rankings
+- **Special winning position** - Selected on setup screen
+- **Celebration effects** when players reach the finish
+
+### ⏱️ Time Features
+- **15-second countdown** for each dice roll turn
+- **5-second countdown** for ladder climbing decision
+- **Timeout notification** when time expires
+
+### 💾 Storage
+- **Auto-save game** to localStorage
+- **Game recovery** when page reloads
+- **Error handling** when data is corrupted
+
+## 🚀 Installation and Running
+
+### Requirements
+- Node.js >= 18.x
+- npm >= 9.x
+- Angular CLI >= 19.x
+
+### Installation
+
+```bash
+# Clone repository
+git clone <repository-url>
+cd DL-16years-game
+
+# Install dependencies
+npm install
+```
+
+### Run Development Server
+
+```bash
+npm start
+# or
+ng serve
+```
+
+Open browser and visit `http://localhost:4200/`
+
+### Build Production
+
+```bash
+npm run build
+```
+
+Build artifacts will be saved in the `dist/` folder
+
+## 🎯 How to Play
+
+### Step 1: Game Setup
+1. Visit the homepage
+2. Enter number of players (minimum 2)
+3. Enter name and select team for each player
+4. Click "Start Game"
+
+### Step 2: Playing
+1. **Dice roller** is displayed on the left panel
+2. **Select player to move** from the leaderboard (can select anyone in the team)
+3. **Click the dice button** to roll
+4. The piece will automatically move according to the points
+5. If landing on a ladder, choose to climb up or stay
+6. If landing on a snake's head, automatically slide down
+
+### Step 3: Winning
+- The first player to reach cell 100 wins
+- Must roll the exact number to finish (cannot exceed)
+
+## 📝 Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm start` | Run development server |
+| `npm run build` | Build production |
+| `npm run watch` | Build with watch mode |
+| `npm test` | Run unit tests |
+| `npm run lint` | Check linting |
+| `npm run lint:fix` | Auto fix linting |
+
+## 🔧 Dice Configuration
+
+The game allows customizing the maximum dice points:
+- Default: 1-12
+- Can be changed in-game via configuration button
+- Applied immediately or from the next round
 
 ## 🎨 Tech Stack
 
