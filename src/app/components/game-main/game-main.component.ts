@@ -81,6 +81,7 @@ export class GameMainComponent implements OnInit, OnDestroy {
   finishPlayerRank: number = 0;
   finishIsSpecialWin: boolean = false;
   private finishModalTimeout?: ReturnType<typeof setTimeout>;
+  private finishModalResolver?: () => void;
 
   // Show all players positions toggle
   showAllPlayersPositions = false;
@@ -322,6 +323,22 @@ export class GameMainComponent implements OnInit, OnDestroy {
         // Player position remains unchanged (Requirements 11.3)
         // Still show token at current position after dice roll
         this.gameService.setShowTokenForPlayer(targetPlayer.id);
+        
+        // Save and move to next turn
+        const finalState = this.gameService.getCurrentState();
+        if (finalState) {
+          this.storageService.saveGameState(finalState);
+        }
+        
+        this.gameService.nextTurn();
+        
+        const stateAfterTurn = this.gameService.getCurrentState();
+        if (stateAfterTurn) {
+          this.storageService.saveGameState(stateAfterTurn);
+        }
+        
+        // Start dice roll timer for next turn
+        this.startDiceRollTimer();
       } else if (toPosition !== fromPosition) {
         this.gameService.movePlayer(targetPlayer.id, diceResult);
         
@@ -373,30 +390,45 @@ export class GameMainComponent implements OnInit, OnDestroy {
           const winningPositions = currentState?.winningPositions || [16];
           const isWinningPosition = winningPositions.includes(rank);
           
-          // Show finish modal
+          // Move to next turn BEFORE showing modal to ensure state is correct
+          this.gameService.nextTurn();
+          
+          // Save state after nextTurn to ensure correct state on reload
+          const stateAfterFinish = this.gameService.getCurrentState();
+          if (stateAfterFinish) {
+            this.storageService.saveGameState(stateAfterFinish);
+          }
+          
+          // Show finish modal (non-blocking for game flow)
           await this.showFinishCelebration(targetPlayer.name, rank, isWinningPosition);
           
           if (this.gameService.checkGameEnd()) {
             this.isGameFinished = true;
           }
+          
+          // Start dice roll timer for next turn
+          if (!this.isGameFinished) {
+            this.startDiceRollTimer();
+          }
+        } else {
+          // Normal turn - save and move to next
+          const finalState = this.gameService.getCurrentState();
+          if (finalState) {
+            this.storageService.saveGameState(finalState);
+          }
+          
+          this.gameService.nextTurn();
+          
+          const stateAfterTurn = this.gameService.getCurrentState();
+          if (stateAfterTurn) {
+            this.storageService.saveGameState(stateAfterTurn);
+          }
+          
+          // Start dice roll timer for next turn
+          if (!this.isGameFinished) {
+            this.startDiceRollTimer();
+          }
         }
-      }
-      
-      const finalState = this.gameService.getCurrentState();
-      if (finalState) {
-        this.storageService.saveGameState(finalState);
-      }
-      
-      this.gameService.nextTurn();
-      
-      const stateAfterTurn = this.gameService.getCurrentState();
-      if (stateAfterTurn) {
-        this.storageService.saveGameState(stateAfterTurn);
-      }
-      
-      // Start dice roll timer for next turn (10 seconds countdown)
-      if (!this.isGameFinished) {
-        this.startDiceRollTimer();
       }
       
     } catch (error) {
@@ -682,11 +714,11 @@ export class GameMainComponent implements OnInit, OnDestroy {
       this.finishPlayerRank = rank;
       this.finishIsSpecialWin = isSpecialWin;
       this.showFinishModal = true;
+      this.finishModalResolver = resolve;
 
       // Auto close after 4 seconds
       this.finishModalTimeout = setTimeout(() => {
         this.closeFinishModal();
-        resolve();
       }, 4000);
     });
   }
@@ -698,6 +730,12 @@ export class GameMainComponent implements OnInit, OnDestroy {
     this.showFinishModal = false;
     if (this.finishModalTimeout) {
       clearTimeout(this.finishModalTimeout);
+      this.finishModalTimeout = undefined;
+    }
+    // Resolve the promise when modal is closed (either by button or timeout)
+    if (this.finishModalResolver) {
+      this.finishModalResolver();
+      this.finishModalResolver = undefined;
     }
   }
 
