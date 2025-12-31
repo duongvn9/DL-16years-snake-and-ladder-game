@@ -189,6 +189,20 @@
     }
 }
 
+// All Players Token - Smaller size for multiple display
+.all-players-token {
+    .token-image {
+        width: clamp(24px, 4vw, 36px);
+        height: clamp(24px, 4vw, 36px);
+    }
+
+    .player-name-label {
+        font-size: clamp(0.55rem, 1vw, 0.7rem);
+        padding: 0.2rem 0.4rem;
+        background: rgba(0, 0, 0, 0.85);
+    }
+}
+
 // Moving Token - Animated player indicator
 .moving-token {
     position: absolute;

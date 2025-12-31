@@ -82,6 +82,9 @@ export class GameMainComponent implements OnInit, OnDestroy {
   finishIsSpecialWin: boolean = false;
   private finishModalTimeout?: ReturnType<typeof setTimeout>;
 
+  // Show all players positions toggle
+  showAllPlayersPositions = false;
+
   private stateSubscription?: Subscription;
 
   constructor(
@@ -695,6 +698,17 @@ export class GameMainComponent implements OnInit, OnDestroy {
     this.showFinishModal = false;
     if (this.finishModalTimeout) {
       clearTimeout(this.finishModalTimeout);
+    }
+  }
+
+  /**
+   * Toggle showing all players positions on the board
+   */
+  toggleShowAllPlayersPositions(): void {
+    this.showAllPlayersPositions = !this.showAllPlayersPositions;
+    
+    if (this.boardComponent) {
+      this.boardComponent.setShowAllPlayers(this.showAllPlayersPositions);
     }
   }
 }

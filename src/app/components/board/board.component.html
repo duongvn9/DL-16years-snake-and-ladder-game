@@ -64,8 +64,20 @@
       </g>
     </svg>
 
+    <!-- All Players Tokens Overlay (shown when showAllPlayers is enabled) -->
+    <div class="token-overlay" *ngIf="showAllPlayers && !isAnimating">
+      <div 
+        *ngFor="let player of allPlayersTokens"
+        class="static-token all-players-token"
+        [style.left.%]="player.x"
+        [style.top.%]="player.y">
+        <img src="red.svg" alt="Token" class="token-image">
+        <div class="player-name-label">{{ player.name }}</div>
+      </div>
+    </div>
+
     <!-- Static Token Overlay (shown after animation ends) -->
-    <div class="token-overlay" *ngIf="staticTokenPlayer && !isAnimating">
+    <div class="token-overlay" *ngIf="staticTokenPlayer && !isAnimating && !showAllPlayers">
       <div 
         class="static-token"
         [style.left.%]="staticTokenPosition.x"
@@ -76,7 +88,7 @@
     </div>
 
     <!-- Next Roller Token Overlay (shown for the player who will roll next) -->
-    <div class="token-overlay" *ngIf="nextRollerTokenPlayer && !isAnimating">
+    <div class="token-overlay" *ngIf="nextRollerTokenPlayer && !isAnimating && !showAllPlayers">
       <div 
         class="static-token next-roller-token"
         [style.left.%]="nextRollerTokenPosition.x"

@@ -30,6 +30,15 @@
         <span class="btn-icon">⚙️</span>
         <span class="btn-text">Cấu hình</span>
       </button>
+      <button 
+        class="header-btn show-all-btn" 
+        (click)="toggleShowAllPlayersPositions()" 
+        title="Hiện/Ẩn tất cả vị trí người chơi"
+        [class.active]="showAllPlayersPositions"
+        [disabled]="isLoading || isRolling">
+        <span class="btn-icon">{{ showAllPlayersPositions ? '👁️' : '👁️‍🗨️' }}</span>
+        <span class="btn-text">Vị trí</span>
+      </button>
       <div class="round-badge">
         <span class="round-label">Round</span>
         <span class="round-number">{{ currentRound }}</span>

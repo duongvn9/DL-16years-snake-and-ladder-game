@@ -223,6 +223,19 @@ $shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
             box-shadow: 0 4px 12px rgba(237, 137, 54, 0.4);
         }
     }
+
+    .show-all-btn {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+
+        &:hover:not(:disabled) {
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+        }
+
+        &.active {
+            background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    }
 }
 
 // Old Header - 3 sections: left, center, right (kept for reference)

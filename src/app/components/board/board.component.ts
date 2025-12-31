@@ -29,6 +29,10 @@ export class BoardComponent implements OnInit, OnDestroy {
   nextRollerTokenPlayer: { id: string; name: string; color: string; position: number } | null = null;
   nextRollerTokenPosition: { x: number; y: number } = { x: 0, y: 0 };
   
+  // Show all players mode
+  showAllPlayers = false;
+  allPlayersTokens: { id: string; name: string; color: string; position: number; x: number; y: number }[] = [];
+  
   private stateSubscription?: Subscription;
 
   constructor(private gameService: GameService) {}
@@ -44,10 +48,16 @@ export class BoardComponent implements OnInit, OnDestroy {
         
         // Update static token display based on showTokenForPlayerId
         this.updateStaticTokenDisplay(state);
+        
+        // Update all players tokens if show all mode is enabled
+        if (this.showAllPlayers) {
+          this.updateAllPlayersTokens(state);
+        }
       } else {
         // Generate preview snakes and ladders when no game state
         this.snakesAndLadders = this.generatePreviewSnakesAndLadders();
         this.staticTokenPlayer = null;
+        this.allPlayersTokens = [];
       }
     });
   }
@@ -143,6 +153,79 @@ export class BoardComponent implements OnInit, OnDestroy {
       x: cellPos.x * cellWidth + cellWidth / 2,
       y: (9 - cellPos.y) * cellHeight + cellHeight / 2
     };
+  }
+
+  /**
+   * Set show all players mode
+   * @param show - Whether to show all players positions
+   */
+  setShowAllPlayers(show: boolean): void {
+    this.showAllPlayers = show;
+    
+    if (show) {
+      const state = this.gameService.getCurrentState();
+      if (state) {
+        this.updateAllPlayersTokens(state);
+      }
+    } else {
+      this.allPlayersTokens = [];
+    }
+  }
+
+  /**
+   * Update all players tokens for display
+   */
+  private updateAllPlayersTokens(state: GameState): void {
+    const cellWidth = 10;
+    const cellHeight = 10;
+    
+    // Group players by position to handle offset for same position
+    const positionGroups = new Map<number, typeof state.players>();
+    state.players.forEach(player => {
+      if (!player.isFinished) {
+        const group = positionGroups.get(player.position) || [];
+        group.push(player);
+        positionGroups.set(player.position, group);
+      }
+    });
+
+    this.allPlayersTokens = [];
+    
+    positionGroups.forEach((players, position) => {
+      players.forEach((player, index) => {
+        let x: number, y: number;
+        
+        if (position === 0) {
+          // Starting position - spread horizontally
+          x = 5 + (index * 8);
+          y = 95;
+        } else {
+          const cellPos = this.getCellPosition(position);
+          if (!cellPos) return;
+          
+          // Calculate base position
+          x = cellPos.x * cellWidth + cellWidth / 2;
+          y = (9 - cellPos.y) * cellHeight + cellHeight / 2;
+          
+          // Offset for multiple players on same cell
+          if (players.length > 1) {
+            const offsetX = (index % 2) * 3 - 1.5;
+            const offsetY = Math.floor(index / 2) * 3 - 1.5;
+            x += offsetX;
+            y += offsetY;
+          }
+        }
+        
+        this.allPlayersTokens.push({
+          id: player.id,
+          name: player.name,
+          color: player.color,
+          position: player.position,
+          x,
+          y
+        });
+      });
+    });
   }
 
   /**
